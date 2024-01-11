@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 
@@ -19,7 +19,7 @@ import static java.util.Collections.emptyList;
  */
 @Service
 @RequiredArgsConstructor
-public class PriceServiceImpl implements PriceService {
+class PriceServiceImpl implements PriceService {
 
     /**
      * Injection price repository bean by constructor.
@@ -27,26 +27,25 @@ public class PriceServiceImpl implements PriceService {
     private final PriceRepository priceRepository;
 
     /**
-     *
-     */
-    /**
      * Method that query to database with some parameters and return the result in an Object TDO.
      *
-     * @param priceRequestDTO A price request DTO {@link PriceRequestDTO}.
-     * @return A List of type {@link PriceResponseDTO}.
      */
+
+    private static final int DEFAULT_LIMIT = 100;
     @Override
     public List<PriceResponseDTO> retrievePrices(PriceRequestDTO priceRequestDTO) {
 
 
         return priceRepository.findPricesByCriteria(
                         priceRequestDTO.getApplyDate(),
+                        priceRequestDTO.getApplyDate(),
                         priceRequestDTO.getProductId(),
-                        priceRequestDTO.getBrandId()
+                        priceRequestDTO.getBrandId(),
+                        Optional.of(priceRequestDTO.getLimit()).filter(limit -> limit > 0).orElse(DEFAULT_LIMIT)
                 ).orElse(emptyList())
                 .stream()
                 .map(PriceMapper.INSTANCE::mapToPriceResponseDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }

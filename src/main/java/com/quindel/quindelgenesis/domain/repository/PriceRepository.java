@@ -23,10 +23,12 @@ public interface PriceRepository extends JpaRepository<Price, Long> {
      * @param brandId   Brand ID for filtering.
      * @return A list of prices matching the criteria.
      */
-    @Query("SELECT p FROM Price p WHERE (:startDate >= p.startDate) " +
-            "AND p.productId = :productId AND p.brand.id = :brandId")
+    @Query("SELECT p FROM Price p WHERE (:startDate >= p.startDate   AND :endDate <= p.endDate ) " +
+            "AND"+" p.productId = :productId AND p.brand.id = :brandId ORDER BY p.priceList LIMIT :limitPrice")
     Optional<List<Price>> findPricesByCriteria(
             @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate,
             @Param("productId") Integer productId,
-            @Param("brandId") Long brandId);
+            @Param("brandId") Long brandId,
+            @Param("limitPrice") int limit);
 }

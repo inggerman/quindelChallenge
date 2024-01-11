@@ -3,7 +3,6 @@ package com.quindel.quindelgenesis.application.dto;
 import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,6 +39,5 @@ public class PriceRequestDTO {
     /**
      * The limit on the number of price rows to be returned. Must be a positive number.
      */
-    @Min(value = 1, message = "Limit must be at least 1.")
-    private Integer limit;
+    private int limit;
 }

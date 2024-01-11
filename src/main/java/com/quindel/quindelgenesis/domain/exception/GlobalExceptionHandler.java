@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ResponseError
                 .builder()
                 .errorId(UUID.randomUUID())
-                .errorMessage(ex.getMessage())
+                .errorMessage(ex.getErrorMessage())
                 .errorCode(ex.getErrorCode())
                 .build(), HttpStatus.NOT_FOUND);
     }
