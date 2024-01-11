@@ -1,4 +1,4 @@
-package com.quindel.quindelgenesis.application.service;
+package com.quindel.quindelgenesis.domain.service;
 
 
 

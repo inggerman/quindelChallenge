@@ -3,12 +3,15 @@ package com.quindel.quindelgenesis.infrastructure.controller;
 
 import com.quindel.quindelgenesis.application.dto.PriceRequestDTO;
 import com.quindel.quindelgenesis.application.dto.PriceResponseDTO;
-import com.quindel.quindelgenesis.application.service.PriceService;
+import com.quindel.quindelgenesis.domain.exception.NotFoundException;
+import com.quindel.quindelgenesis.domain.service.PriceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -50,11 +54,11 @@ public class PriceController {
             @ApiResponse(responseCode = "404", description = "No prices found for the given criteria."),
             @ApiResponse(responseCode = "400", description = "Invalid request parameters.")
     })
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PriceResponseDTO>> getPrices(
-            @RequestParam("applyDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime applyDate,
-            @RequestParam("productId") Integer productId,
-            @RequestParam("brandId") Long brandId
+            @RequestParam("applyDate") @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime applyDate,
+            @RequestParam("productId") @NotNull  Integer productId,
+            @RequestParam("brandId")  Long brandId
     ) {
         return Optional.of(PriceRequestDTO.builder()
                         .applyDate(applyDate)
@@ -64,6 +68,7 @@ public class PriceController {
                 .map(priceService::retrievePrices)
                 .filter(list -> !list.isEmpty())
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(()->
+                        new NotFoundException("No prices found for the given criteria.","123"));
     }
 }

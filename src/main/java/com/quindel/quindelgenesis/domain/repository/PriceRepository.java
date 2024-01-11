@@ -2,7 +2,6 @@ package com.quindel.quindelgenesis.domain.repository;
 
 
 import com.quindel.quindelgenesis.domain.model.Price;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,18 +19,14 @@ public interface PriceRepository extends JpaRepository<Price, Long> {
      * product ID, and brand ID, within the given Pageable limits.
      *
      * @param startDate Start date for filtering.
-     * @param endDate   End date for filtering.
      * @param productId Product ID for filtering.
      * @param brandId   Brand ID for filtering.
-     * @param pageable  Pageable object to define pagination and sorting.
      * @return A list of prices matching the criteria.
      */
-    @Query("SELECT p FROM Price p WHERE (:startDate >= p.startDate AND :endDate <= p.endDate) " +
+    @Query("SELECT p FROM Price p WHERE (:startDate >= p.startDate) " +
             "AND p.productId = :productId AND p.brand.id = :brandId")
     Optional<List<Price>> findPricesByCriteria(
             @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate,
             @Param("productId") Integer productId,
-            @Param("brandId") Long brandId,
-            Pageable pageable);
+            @Param("brandId") Long brandId);
 }

@@ -1,16 +1,15 @@
-
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.1'
+    id 'org.springframework.boot' version '3.2.0'
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
 ext {
-    springBootVersion = '3.2.1'
+    springBootVersion = '3.2.0'
     springDependencyManagementVersion = '1.1.4'
     javaVersion = '17'
-    mapstructVersion = '1.4.2.Final'
-    h2Version = '2.2.220'
+    mapstructVersion = '1.5.5.Final'
+    h2Version = '2.2.224'
     lombokVersion = '1.18.30'
     springBootStarterWebVersion = '3.2.0'
     springBootStarterDataJpaVersion = '3.2.0'
@@ -26,11 +25,7 @@ java {
     sourceCompatibility = javaVersion
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
+
 
 repositories {
     mavenCentral()
@@ -39,12 +34,14 @@ repositories {
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:${springBootStarterWebVersion}"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootStarterDataJpaVersion}"
-    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-    implementation "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-    runtimeOnly "com.h2database:h2:${h2Version}"
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenApiVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    runtimeOnly "com.h2database:h2:${h2Version}"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenApiVersion}"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'javax.validation:validation-api:2.0.1.Final'
 

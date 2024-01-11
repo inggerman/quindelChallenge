@@ -1,18 +1,15 @@
-package com.quindel.quindelgenesis.domain.service;
+package com.quindel.quindelgenesis.application.service;
 
 
 import com.quindel.quindelgenesis.application.dto.PriceRequestDTO;
 import com.quindel.quindelgenesis.application.dto.PriceResponseDTO;
 import com.quindel.quindelgenesis.application.mapper.PriceMapper;
-import com.quindel.quindelgenesis.application.service.PriceService;
 import com.quindel.quindelgenesis.domain.repository.PriceRepository;
+import com.quindel.quindelgenesis.domain.service.PriceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
@@ -32,7 +29,6 @@ public class PriceServiceImpl implements PriceService {
     /**
      *
      */
-    private static final int DEFAULT_LIMIT = 100;
     /**
      * Method that query to database with some parameters and return the result in an Object TDO.
      *
@@ -44,11 +40,9 @@ public class PriceServiceImpl implements PriceService {
 
 
         return priceRepository.findPricesByCriteria(
-                        priceRequestDTO.getApplyDate(), priceRequestDTO.getApplyDate(),
-                        priceRequestDTO.getProductId(), priceRequestDTO.getBrandId(),
-                        PageRequest.of(0, Optional.ofNullable(priceRequestDTO.getLimit())
-                                .filter(l -> l > 0)
-                                .orElse(DEFAULT_LIMIT))
+                        priceRequestDTO.getApplyDate(),
+                        priceRequestDTO.getProductId(),
+                        priceRequestDTO.getBrandId()
                 ).orElse(emptyList())
                 .stream()
                 .map(PriceMapper.INSTANCE::mapToPriceResponseDto)

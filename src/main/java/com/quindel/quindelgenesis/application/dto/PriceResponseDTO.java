@@ -41,13 +41,6 @@ public class PriceResponseDTO {
     private LocalDateTime startDate;
 
     /**
-     * Attribute end date.
-     */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime endDate;
-
-    /**
      * Attribute price.
      */
     private BigDecimal price;
